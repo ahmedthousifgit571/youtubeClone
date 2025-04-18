@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { YOUTUBE_API } from '../utils/constants';
 import VideoCards from './VideoCards';
+import { Link } from 'react-router-dom';
+
 
 const VideoContainer = () => {
   const [videos, setVideos] = useState([]);
@@ -15,6 +17,7 @@ const VideoContainer = () => {
       const data = await fetch(YOUTUBE_API);
       const json = await data.json();
       setVideos(json.items);
+      console.log(json.items)
     } catch (error) {
       console.error('Error fetching videos:', error);
     } finally {
@@ -33,7 +36,9 @@ const VideoContainer = () => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 overflow-y-auto h-[500px] hide-scrollbar">
       {videos.map((video) => (
-        <VideoCards key={video.id} info={video} />
+        
+       <Link to={'/watch?v=' + video.id}> <VideoCards key={video.id} info={video} /> </Link>
+        
       ))}
     </div>
   );

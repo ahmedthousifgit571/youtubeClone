@@ -1,13 +1,21 @@
 import React from 'react'
 import { Search, Mic, Bell, Menu, Video, User, MoreVertical } from 'lucide-react';
+import { useDispatch } from 'react-redux';
+import { toggleMenu } from '../utils/appSlice';
+import { Link } from 'react-router-dom';
 
 const Head = () => {
+  const dispatch =  useDispatch()
+
+  const handleMenuClick=()=>{
+       dispatch(toggleMenu())
+  }
   return (
     <header className="flex items-center justify-between px-4 py-2 bg-white sticky top-0 z-10 shadow-sm">
     
     {/* Left section - Logo and menu */}
     <div className="flex items-center gap-4">
-      <button className="p-2 rounded-full hover:bg-gray-100">
+      <button className="p-2 rounded-full hover:bg-gray-100" onClick={()=>handleMenuClick()}>
         <Menu size={20} />
       </button>
       <div className="flex items-center cursor-pointer">
@@ -18,7 +26,7 @@ const Head = () => {
             <div className="w-3 h-3 bg-white transform rotate-45" style={{ borderRadius: '2px' }}></div>
           </div>
           
-          <span className="ml-1 text-xl font-bold">YouTube</span>
+   <span className="ml-1 text-xl font-bold">YouTube</span> 
         </div>
       </div>
     </div>
