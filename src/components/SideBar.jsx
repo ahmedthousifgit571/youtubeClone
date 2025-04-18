@@ -1,12 +1,14 @@
 import React from 'react';
 import { Home, Compass, Clock, ThumbsUp, PlaySquare, History, Film, Music, Gamepad2, Trophy, Flame, ShoppingBag, Lightbulb } from 'lucide-react';
-
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 const SideBar = () => {
-  return (
+  const toggleState = useSelector(store=> store.app.isMenuOpen)
+  return !toggleState ? null : (
     <div className="w-64 bg-white h-screen overflow-y-auto py-2 border-r border-gray-200">
       {/* Main Navigation */}
       <div className="px-3 mb-4">
-        <NavItem icon={<Home size={20} />} text="Home" active />
+        <Link to={"/"}> <NavItem icon={<Home size={20} />} text="Home" active /></Link>
         <NavItem icon={<Compass size={20} />} text="Explore" />
         <NavItem icon={<PlaySquare size={20} />} text="Shorts" />
         <NavItem icon={<Film size={20} />} text="Subscriptions" />
