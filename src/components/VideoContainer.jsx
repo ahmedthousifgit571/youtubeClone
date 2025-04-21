@@ -37,7 +37,7 @@ const VideoContainer = () => {
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 overflow-y-auto h-[500px] hide-scrollbar">
       {videos.map((video) => (
         
-       <Link to={'/watch?v=' + video.id}> <VideoCards key={video.id} info={video} /> </Link>
+       <Link to={'/watch?v=' + video.id} key={video.id}> <VideoCards  info={video} /> </Link>
         
       ))}
     </div>
