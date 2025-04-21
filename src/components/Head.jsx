@@ -1,11 +1,32 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Search, Mic, Bell, Menu, Video, User, MoreVertical } from 'lucide-react';
 import { useDispatch } from 'react-redux';
 import { toggleMenu } from '../utils/appSlice';
 import { Link } from 'react-router-dom';
+import { YOUTUBE_SEARCH_API } from '../utils/constants';
 
 const Head = () => {
   const dispatch =  useDispatch()
+  const [searchQuery,setSearchQuery] = useState("")
+  const [suggestions,setSuggestions] = useState([])
+  const [showSuggestions,setShowSuggestions] = useState(false)
+  
+  //debouncing to avoid over api calls 
+  useEffect(()=>{
+     console.log(searchQuery)
+     const timer = setTimeout(()=> searchSuggestions(),200)
+     return ()=>{
+      clearInterval(timer)
+     }
+  },[searchQuery])
+  
+  const searchSuggestions = async ()=>{
+    console.log('api call -' + searchQuery)
+    const data = await fetch(YOUTUBE_SEARCH_API + searchQuery);
+    const json = await data.json()
+    setSuggestions(json[1])
+    console.log(json[1])
+  }
 
   const handleMenuClick=()=>{
        dispatch(toggleMenu())
@@ -38,9 +59,20 @@ const Head = () => {
           <input
             type="text"
             placeholder="Search"
+            value = {searchQuery}
+            onChange={(e)=>setSearchQuery(e.target.value)}
+            onFocus={()=> setShowSuggestions(true)}
+            onBlur={()=> setShowSuggestions(false)}
             className="w-full py-2 px-4 border border-gray-300 rounded-l-full focus:outline-none focus:border-blue-500"
           />
+          { showSuggestions && suggestions.length > 0 && (<div className='absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50'>
+            <ul className='py-2'>
+              {suggestions.map((s)=> <li key={s} className='flex items-center px-4 py-2 hover:bg-gray-100 cursor-pointer'>{s}</li>)}
+            </ul>
+          </div> )}
         </div>
+
+        
         <button className="bg-gray-100 border border-l-0 border-gray-300 px-5 py-2 rounded-r-full hover:bg-gray-200">
           <Search size={20} />
         </button>
@@ -49,6 +81,8 @@ const Head = () => {
         <Mic size={20} />
       </button>
     </div>
+
+    
 
     {/* Right section - User controls */}
     <div className="flex items-center gap-3">
